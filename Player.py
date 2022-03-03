@@ -1,7 +1,5 @@
-
 import pygame
 import random
-
 
 startPos_x = 140
 startPos_y = 140
@@ -9,15 +7,18 @@ startPos_y = 140
 tile_width = 50
 tile_height = 50
 
-
-
 class Player(object):
-    def __init__(self, player, x1, y1, x2, y2, finishline):
+    def __init__(self, player, x1, y1, x2, y2, finishline): #player - player number
         self.player = player
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
+
+        if player == 1: self.turn = True;  #whos turn is it now
+        else: 
+            self.turn = False;
+
         self.x = tile_width*self.x1 + startPos_x
         self.y = tile_height*self.y1 + startPos_y
         self.length = abs(x2-x1) + abs(y1-y2) + 1
@@ -34,6 +35,15 @@ class Player(object):
         print('Length of vehicle:', self.length)
         print('Finishline is tile with string', self.finishline)
         print('------------------------------------------')
+
+    def move_options(self):
+        point1 = (self.x1-1, self.y1)
+        point2 = (self.x2+1, self.y2)
+        points = []
+        points.add(point1)
+        points.add(point2)
+
+        return points
 
 
     def find_image(self):

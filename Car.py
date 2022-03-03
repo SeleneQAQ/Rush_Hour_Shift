@@ -24,11 +24,12 @@ class Car:
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
+        self.carNumber = carNumber
+
         self.x = tile_width*self.x1 + startPos_x
         self.y = tile_height*self.y1 + startPos_y
-        self.carNumber = carNumber
         self.length = abs(x2-x1) + abs(y1-y2) + 1
-        self.position = self.what_position()
+        self.positionVertical = self.what_position()
         self.image = self.find_image()
         
 
@@ -42,9 +43,9 @@ class Car:
 
     def what_position(self):
         if self.x1 == self.x2:
-            return "Vertical"
+            return True
         else:
-            return "Horizontal"
+            return False
 
     def find_image(self):
         image = None
@@ -61,7 +62,7 @@ class Car:
 
         image = pygame.transform.scale(image, (tile_width*self.length,tile_height))
 
-        if self.position == 'Vertical':
+        if self.positionVertical == True:
             if random.random() > 0.5:
                 image = pygame.transform.rotate(image, 270)
             else:
@@ -73,6 +74,22 @@ class Car:
         return image
 
         
+
+    def move_options(self):
+        if self.positionVertical ==False:
+            point1 = (self.x1-1, self.y1)
+            point2 = (self.x2+1, self.y2)
+            points = []
+            points.add(point1)
+            points.add(point2)
+            return points
+        else:
+            point1 = (self.x1, self.y1-1)
+            point2 = (self.x2+1, self.y2+1)
+            points = []
+            points.add(point1)
+            points.add(point2)
+            return points
 
        
     def moveCar(self, move):
