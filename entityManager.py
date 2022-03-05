@@ -2,9 +2,10 @@ import BoardTile
 import Car
 import time
 import pygame
+import GameAi
 
 board_tiles = []
-car_manager = []
+car_list = []
 player_list = []
 
 
@@ -13,7 +14,6 @@ tile_height = 50
 
 startPos_x = 140
 startPos_y = 140
-
 
 
 tile_finish_left = pygame.image.load('images/track_tile_finishline.jpg')
@@ -26,16 +26,15 @@ tile_finish_right = pygame.transform.scale(tile_finish_right, (50, 50))
 tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
-def set_carlist(car_list):
-    for car in car_list:
-        car_manager.append(car)
+def set_carlist(generated_cars):
+    for car in generated_cars:
+        car_list.append(car)
+    
 
 def set_players(players):
     for p in players:
         player_list.append(p)
 
-    
-        
 
 def generate_board(board):
     row, col = board.shape
@@ -55,15 +54,30 @@ def generate_board(board):
 
 
 
+def update(game_board):
+    # print(game_board)
+
+    curr_player = GameAi.check_player_turn(player_list)
+    print(f'It is {curr_player.number} turn')
+
+
+    GameAi.update_board(game_board, curr_player, car_list)
+
+    # change whose turn it is
+    for player in player_list:
+        player.turn = not player.turn
+        
+        
+
+    return game_board
+
+
 def render(screen):
     for entity in board_tiles:
         entity.render(screen)
 
-    # print(car_manager)
-    # print()
-    for entity in car_manager:
+    for entity in car_list:
         entity.render(screen)
-            # print(entity.image)
 
     for entity in player_list:
         entity.render(screen)

@@ -30,11 +30,13 @@ entityManager.generate_board(board)
 entityManager.set_carlist(carList)
 entityManager.set_players(player_list)
 
-
-
+entityManager.render(screen)
+count = 0
 while(run):
+    count += 1
     #pygame.time.delay(100)
     #event_handler()
+    # print('inside loop')
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -44,7 +46,9 @@ while(run):
 
 
     # if not keys[pygame.K_o]:
-        # entityManager.update(keys)
+
+    new_board = entityManager.update(board)
+    pygame.time.wait(200)
 
 
     if keys[pygame.K_q]:
@@ -58,6 +62,8 @@ while(run):
 
     pygame.display.update()
     screen.fill(white)
+    if count == 1:
+        run = False
 
 
 

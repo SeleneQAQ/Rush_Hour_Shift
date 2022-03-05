@@ -5,33 +5,54 @@ import Player
 def check_player_turn(players): #check whos turn is it, players - players list
     for player in players:
         if player.turn == True:
-            return player;
+            return player
  
-def check_if_obstacles(x,y, cars):
-    if x < 0 | y < 0:
-        return False
-    # Add the if for exeeding the board dimenstions!!!!!!
-       #....
-       #....
-    for car in cars:
-        if car.positionVertical == True:
-            if y <= car.y1 & y >= car.y2:
-                return True
-        if car.positionVertical == False:
-             if x >= car.x1 & x<= car.x2:
-                return True
-    # no obstacles found:
-    return False  
+def check_if_obstacles(x,y, game_board, car):
+    if x < 0 or y < 0:
+        return True
 
-def get_possible_moves(points, cars):
+    if (car.number == 1 and x == len(game_board[0])-1) or (car.number == -1 and x == 0):
+        return False  
+
+    try:
+        tile_value = int(game_board[y][x])
+        if tile_value == 0:
+            return False
+    except:
+        return True
+    
+
+    
+
+
+
+def get_possible_moves(player, cars, game_board):
+    print('get_possible_moves')
     validPoints = []
-    for point in points:
-        check = check_if_obstacles(point[0], point[1], cars)
-        if check == False:
-            points.append(point)
+
+    objects = [player,*cars]
+
+    # Chech which moves are available for each car
+    for obj in objects:
+        points = obj.move_options()
+        for point in points:
+            check = check_if_obstacles(point[0], point[1], game_board, obj)
+            if check == False:
+                # print(f"Car {obj.number}. Move {point}, available")
+                validPoints.append( {'carNo': obj.number, 'points': point})
+            else:
+                # print(f"Car {obj.number}. Move {point}, NOT available")
+                pass
+
+
+    print(validPoints)
+
+
     if validPoints:
         return validPoints
-    else: return None
+    else:
+        return None
+    
 
 def state_after_move(point, objectNumber, isPlayer, players, cars):
     if isPlayer == True:
@@ -40,15 +61,21 @@ def state_after_move(point, objectNumber, isPlayer, players, cars):
             players[objectNumber].x1 = point[0]
             players[objectNumber].y1 = point[1]
 
-def tree(players, cars): 
-    player = check_player_turn(players)
-    playerMoves = get_possible_moves(player.move_options(), cars)
+def tree(player, cars, game_board): 
+    print('tree')
+    # player = check_player_turn(players)
+    playerMoves = get_possible_moves(player, cars, game_board)
+
+    print('hingað')
+    # return
     init_state = {
-        "players" : players,
+        "players" : player,
         "cars" : cars
         }
-    number = player.player
+
+    number = player.number
     for move in playerMoves:
+        print(move)
         moveDecision = { "Player" : True,
                         "Name" : number,
                         "MoveLocation" : move,
@@ -61,3 +88,12 @@ def tree(players, cars):
     #    player number and pos: all possible moves for player and obstacles
     #    expand all
     #    ]
+
+
+def update_board(game_board, curr_player, cars):
+    move_list = []
+    new_board = []
+
+    
+
+    tree(curr_player, cars, game_board)
