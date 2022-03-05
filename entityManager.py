@@ -8,13 +8,11 @@ board_tiles = []
 car_list = []
 player_list = []
 
-
 tile_width = 50
 tile_height = 50
 
 startPos_x = 140
 startPos_y = 140
-
 
 tile_finish_left = pygame.image.load('images/track_tile_finishline.jpg')
 tile_finish_left = pygame.transform.scale(tile_finish_left, (50, 50))
@@ -35,7 +33,6 @@ def set_players(players):
     for p in players:
         player_list.append(p)
 
-
 def generate_board(board):
     row, col = board.shape
     for i in range(row):
@@ -49,7 +46,6 @@ def generate_board(board):
                 tile_image = tile_finish_right
             else:
                 tile_image = tile_regular
-
             board_tiles.append(BoardTile.BoardTile(pos_x, pos_y, tile_width, tile_height, tile_image))
 
 
@@ -61,7 +57,7 @@ def update(game_board):
     print(f'It is {curr_player.number} turn')
 
 
-    GameAi.update_board(game_board, curr_player, car_list)
+    GameAi.tree(curr_player, car_list, game_board)
 
     # change whose turn it is
     for player in player_list:

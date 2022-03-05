@@ -20,10 +20,6 @@ def check_if_obstacles(x,y, game_board, car):
             return False
     except:
         return True
-    
-
-    
-
 
 
 def get_possible_moves(player, cars, game_board):
@@ -31,6 +27,7 @@ def get_possible_moves(player, cars, game_board):
     validPoints = []
 
     objects = [player,*cars]
+    print(objects)
 
     # Chech which moves are available for each car
     for obj in objects:
@@ -45,14 +42,8 @@ def get_possible_moves(player, cars, game_board):
                 pass
 
 
-    print(validPoints)
-
-
-    if validPoints:
-        return validPoints
-    else:
-        return None
-    
+    # print(validPoints)
+    return validPoints    
 
 def state_after_move(point, objectNumber, isPlayer, players, cars):
     if isPlayer == True:
@@ -72,15 +63,31 @@ def tree(player, cars, game_board):
         "players" : player,
         "cars" : cars
         }
+   
 
     number = player.number
-    for move in playerMoves:
-        print(move)
-        moveDecision = { "Player" : True,
-                        "Name" : number,
-                        "MoveLocation" : move,
-                        "IsWinningMove" : isWinningMove
-            }
+    treeOneLvl = []
+    if playerMoves != None:
+        for move in playerMoves:
+            
+            if move['carNo'] == 1 or move['carNo'] == -1:
+                moveDecision = { "Player" : True,
+                                "Name" : number,
+                                "MoveLocation" : move['points'],
+                                "IsWinningMove" : False
+                    }
+
+            else:
+                moveDecision = { "Player" : False,
+                            "Name" : move['carNo'],
+                            "MoveLocation" : move['points']
+                            }
+            
+            treeOneLvl.append(moveDecision)
+
+
+    print('TREE level:')
+    print(treeOneLvl)
    
     # What to do have at least first level of the tree like this: https://www.educative.io/edpresso/how-to-implement-a-breadth-first-search-in-python
 
@@ -90,10 +97,3 @@ def tree(player, cars, game_board):
     #    ]
 
 
-def update_board(game_board, curr_player, cars):
-    move_list = []
-    new_board = []
-
-    
-
-    tree(curr_player, cars, game_board)

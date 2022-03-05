@@ -47,6 +47,21 @@ class Car:
         else:
             return False
 
+
+    def move_options(self):
+        if (self.positionVertical == True):
+            point1 = (self.x1, self.y1-1)
+            point2 = (self.x2, self.y2+1)
+        else: 
+            point1 = (self.x1-1, self.y1)
+            point2 = (self.x2+1, self.y2)
+
+        points = []
+        points.append(point1)
+        points.append(point2)
+
+        return points
+
     def find_image(self):
         image = None
         if self.length >= 3:
