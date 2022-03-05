@@ -7,14 +7,11 @@ board_tiles = []
 car_manager = []
 player_list = []
 
-
 tile_width = 50
 tile_height = 50
 
 startPos_x = 140
 startPos_y = 140
-
-
 
 tile_finish_left = pygame.image.load('images/track_tile_finishline.jpg')
 tile_finish_left = pygame.transform.scale(tile_finish_left, (50, 50))
@@ -34,9 +31,6 @@ def set_players(players):
     for p in players:
         player_list.append(p)
 
-    
-        
-
 def generate_board(board):
     row, col = board.shape
     for i in range(row):
@@ -50,10 +44,7 @@ def generate_board(board):
                 tile_image = tile_finish_right
             else:
                 tile_image = tile_regular
-
             board_tiles.append(BoardTile.BoardTile(pos_x, pos_y, tile_width, tile_height, tile_image))
-
-
 
 def render(screen):
     for entity in board_tiles:

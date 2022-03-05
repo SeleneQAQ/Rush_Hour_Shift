@@ -9,7 +9,7 @@ tile_height = 50
 
 class Player(object):
     def __init__(self, player, x1, y1, x2, y2, finishline): #player - player number
-        self.player = player
+        self.number = player
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
@@ -29,7 +29,7 @@ class Player(object):
     
     def printAttributes(self):
         print('------------------------------------------')
-        print('PLayer number: ' + str(self.player))
+        print('PLayer number: ' + str(self.number))
         print('start position: (' + str(self.x1) + ", " + str(self.y1) + ") ")
         print('end position: (' + str(self.x2) + ", " + str(self.y2) + ") " )
         print('Length of vehicle:', self.length)
@@ -40,15 +40,15 @@ class Player(object):
         point1 = (self.x1-1, self.y1)
         point2 = (self.x2+1, self.y2)
         points = []
-        points.add(point1)
-        points.add(point2)
+        points.append(point1)
+        points.append(point2)
 
         return points
 
 
     def find_image(self):
         image = None
-        if self.player == 1:            
+        if self.number == 1:            
             image = pygame.image.load('images/red-car.png')
         else:
             image = pygame.image.load('images/yellow-car.png')
@@ -56,7 +56,7 @@ class Player(object):
 
         image = pygame.transform.scale(image, (tile_width*self.length,tile_height))
 
-        if self.player == -1:
+        if self.number == -1:
             image = pygame.transform.rotate(image, 180)
         
         return image

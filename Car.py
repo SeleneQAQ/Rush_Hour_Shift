@@ -24,7 +24,7 @@ class Car:
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
-        self.carNumber = carNumber
+        self.number = carNumber
 
         self.x = tile_width*self.x1 + startPos_x
         self.y = tile_height*self.y1 + startPos_y
@@ -35,7 +35,7 @@ class Car:
 
     def printAttributes(self):
         print('------------------------------------------')
-        print('Car number: ' + str(self.carNumber))
+        print('Car number: ' + str(self.number))
         print('start position: (' + str(self.x1) + ", " + str(self.y1) + ") ")
         print('end position: (' + str(self.x2) + ", " + str(self.y2) + ") " )
         print('Length of vehicle:', self.length, 'and is', self.position)
@@ -46,6 +46,21 @@ class Car:
             return True
         else:
             return False
+
+
+    def move_options(self):
+        if (self.positionVertical == True):
+            point1 = (self.x1, self.y1-1)
+            point2 = (self.x2, self.y2+1)
+        else: 
+            point1 = (self.x1-1, self.y1)
+            point2 = (self.x2+1, self.y2)
+
+        points = []
+        points.append(point1)
+        points.append(point2)
+
+        return points
 
     def find_image(self):
         image = None
@@ -80,15 +95,15 @@ class Car:
             point1 = (self.x1-1, self.y1)
             point2 = (self.x2+1, self.y2)
             points = []
-            points.add(point1)
-            points.add(point2)
+            points.append(point1)
+            points.append(point2)
             return points
         else:
             point1 = (self.x1, self.y1-1)
-            point2 = (self.x2+1, self.y2+1)
+            point2 = (self.x2, self.y2+1)
             points = []
-            points.add(point1)
-            points.add(point2)
+            points.append(point1)
+            points.append(point2)
             return points
 
        

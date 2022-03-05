@@ -5,10 +5,14 @@ import Car
 import time
 import init_game
 import entityManager
+import GameAi
 
 
 pygame.init()
-
+points = []
+points.append((1,2))
+points.append((3,4))
+print(points[0][0])
 
 width, height = 1080, 600
 screen = pygame.display.set_mode((width, height))
@@ -25,12 +29,11 @@ print(board)
 # for p in player_list:
 #     p.printAttributes()
 
-
 entityManager.generate_board(board)
 entityManager.set_carlist(carList)
 entityManager.set_players(player_list)
-
-
+print("enter tree")
+GameAi.tree(player_list, carList)
 
 while(run):
     #pygame.time.delay(100)
