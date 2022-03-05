@@ -1,1 +1,7 @@
 __pycache__/
+
+*.xls
+*.pyc
+
+*.suo
+*.sqlite
