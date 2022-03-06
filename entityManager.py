@@ -54,9 +54,21 @@ def generate_board(board):
             board_tiles.append(BoardTile.BoardTile(pos_x, pos_y, tile_width, tile_height, tile_image))
 
 
+def checkIfGameIsFinished(game_board):
+    if game_board[2][15] == '1':
+        return True, 1
+    
+    if game_board[3][0] == '-1':
+        return True, -1
+    
+    return False, 0
+
 
 def update(game_board):
     # print(game_board)
+    game_finished, winner = checkIfGameIsFinished(game_board)
+    if game_finished:
+        return game_board, winner
 
     curr_player = GameAi.check_player_turn(car_list)
     print(f'It is {curr_player.number} turn')
@@ -85,7 +97,7 @@ def update(game_board):
             player.turn = not player.turn
          
 
-    return next_board
+    return next_board, 0
 
 
 def render(screen):

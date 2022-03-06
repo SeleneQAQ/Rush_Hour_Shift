@@ -86,6 +86,7 @@ def find_car_from_board(board, x):
                         if i+inc == row:
                             break
 
+                
                 if carFound == False:
                     inc = 1
                     while(board[i][j+inc] == str(x)):
@@ -93,6 +94,8 @@ def find_car_from_board(board, x):
                         y2=i
                         inc=inc+1
                         carFound = True
+                        if j+inc == col:
+                            break
                
                 if carFound == False:
                     continue

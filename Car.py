@@ -124,8 +124,11 @@ class Car:
 
 
     def render(self, screen):
-        
         screen.blit(self.image, (self.x,self.y))
+
+        myfont = pygame.font.SysFont('Arial', 30)
+        textsurface = myfont.render(f'{self.number}', False, (255, 255, 255))
+        screen.blit(textsurface, (self.x+5,self.y+5))
 
 
         

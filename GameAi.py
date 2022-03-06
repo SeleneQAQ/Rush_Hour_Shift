@@ -119,13 +119,13 @@ def tree(player, cars, game_board):
         "players" : player,
         "cars" : cars
         }
-    print(len(playerMoves))
+    # print(len(playerMoves))
 
     number = player
     treeOneLvl = []
     if playerMoves != None:
         for move in playerMoves:
-            print('checking,', move['carNo'])
+            # print('checking,', move['carNo'])
 
             if move['carNo'] == 1 or move['carNo'] == -1:
                 moveDecision = { "Player" : True,

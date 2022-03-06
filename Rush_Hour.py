@@ -34,10 +34,11 @@ entityManager.set_carlist(carList)
 # entityManager.set_players(player_list)
 
 entityManager.render(screen)
-count = 0
+winner = 0
 
 print(board)
 
+count = 0
 while(run):
     count += 1
     #pygame.time.delay(100)
@@ -53,10 +54,11 @@ while(run):
 
     # if not keys[pygame.K_o]:
 
-    # pygame.time.wait(1000)
-    board = entityManager.update(board)
+
+    if winner == 0:
+        board, winner = entityManager.update(board)
     # print(board)
-    pygame.time.wait(500)
+    pygame.time.wait(100)
 
 
     if keys[pygame.K_q]:
@@ -67,6 +69,10 @@ while(run):
 
     entityManager.render(screen)
 
+    if winner != 0:
+        myfont = pygame.font.SysFont('Arial', 60)
+        textsurface = myfont.render(f'Player {winner} is the winner of this game', False, (255, 255, 255))
+        screen.blit(textsurface, ((width/2)-370,(height/2)))
 
     pygame.display.update()
     screen.fill(white)
