@@ -20,21 +20,23 @@ white = (255,255,255)
 
 run = True
 carList = []
-board, carList, player_list = init_game.init_game()
+board, carList = init_game.init_game()
 
 print(board.shape)
 print(board)
-# print()
-# print(carList)
-# for p in player_list:
-#     p.printAttributes()
+print()
+print(carList)
+# for c in carList:
+#     c.printAttributes()
 
 entityManager.generate_board(board)
 entityManager.set_carlist(carList)
-entityManager.set_players(player_list)
+# entityManager.set_players(player_list)
 
 entityManager.render(screen)
 count = 0
+
+print(board)
 
 while(run):
     count += 1
@@ -51,8 +53,10 @@ while(run):
 
     # if not keys[pygame.K_o]:
 
-    new_board = entityManager.update(board)
-    pygame.time.wait(200)
+    # pygame.time.wait(1000)
+    board = entityManager.update(board)
+    # print(board)
+    pygame.time.wait(500)
 
 
     if keys[pygame.K_q]:
@@ -66,8 +70,8 @@ while(run):
 
     pygame.display.update()
     screen.fill(white)
-    if count == 1:
-        run = False
+    # if count == 2:
+    #     run = False
 
 
 

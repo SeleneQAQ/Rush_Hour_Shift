@@ -2,6 +2,7 @@ import xlrd
 import numpy as np
 import Car
 import Player
+import time
 
 table = xlrd.open_workbook('game.xls')
 sheet = table.sheet_by_name('Sheet1')
@@ -20,7 +21,7 @@ def find_YOU():
             if sheet.cell(i, j).value == 'YOU':
                 return [j, i]
 
-def find_Car(x, player=False):
+def find_Car(x):
     for i in range(row):
         for j in range(col):
             if sheet.cell(i, j).value == x:
@@ -31,14 +32,16 @@ def find_Car(x, player=False):
                 
                 # x1,y1 - staring coords of a car
                 # x2, y2 - end coords of a car
-                while(sheet.cell(i+inc, j).value ==x):
-                    x2=j
-                    y2=i+inc
-                    inc=inc+1
-                    carFound = True
-                    # print(i+inc, j, row)
-                    if i+inc == row:
-                        break
+                
+                if i+inc < row:
+                    while(sheet.cell(i+inc, j).value == x):
+                        x2=j
+                        y2=i+inc
+                        inc=inc+1
+                        carFound = True
+                        # print(i+inc, j, row)
+                        if i+inc == row:
+                            break
 
                 if carFound == False:
                     inc = 1
@@ -51,29 +54,78 @@ def find_Car(x, player=False):
                 if carFound == False:
                     return False
 
-                if player:
+                if x == -1 or x == 1:
                     finishline = f'W{str(x)}'
-                    return Player.Player(x, x1, y1, x2, y2, finishline)
+                    # return Player.Player(x, x1, y1, x2, y2, finishline)
+                    return Car.Car(x, x1, y1, x2, y2, finishline)
                 else:
-                   return Car.Car(x, x1, y1, x2, y2)
+                   return Car.Car(x, x1, y1, x2, y2, finishline=None)
                 # return car
     return False
 
-def generate_players():
-    players = [find_Car(-1, True), find_Car(1, True)]
-    return players
+
+def find_car_from_board(board, x):
+
+    for i in range(row):
+        for j in range(col):
+            if board[i][j] == str(x):
+                x1=j
+                y1=i
+                inc=1
+                carFound = False
+                
+                # x1,y1 - staring coords of a car
+                # x2, y2 - end coords of a car
+                if i+inc < row:
+                    while(board[i+inc][j] == str(x)):
+                        x2=j
+                        y2=i+inc
+                        inc=inc+1
+                        carFound = True
+                        # print(i+inc, j, row)
+                        if i+inc == row:
+                            break
+
+                if carFound == False:
+                    inc = 1
+                    while(board[i][j+inc] == str(x)):
+                        x2=j+inc
+                        y2=i
+                        inc=inc+1
+                        carFound = True
+               
+                if carFound == False:
+                    continue
+
+                if x == -1 or x == 1:
+                    finishline = f'W{str(x)}'
+                    # return Player.Player(x, x1, y1, x2, y2, finishline)
+                    return Car.Car(x, x1, y1, x2, y2, finishline)
+                else:
+                    return Car.Car(x, x1, y1, x2, y2, finishline=None)
+
+    return None
+
+        
+
+# def generate_players():
+#     players = [find_Car(-1, True), find_Car(1, True)]
+#     return players
 
 
 
 def generate_Car_List(amount):
     carList = []
-    for i in range(2, amount):    
+    for i in range(-1, amount):   
+        if i == 0:
+            continue 
         car = find_Car(i)
         if car == False: #if no car at his number found    
             continue
         else:
             carList.append(car)
             # car.printAttributes()
+
     return carList
 
 def init_game():
@@ -99,9 +151,9 @@ def init_game():
     carList = generate_Car_List(10)
 
     # Generate the players
-    player_list = generate_players()
+    # player_list = generate_players()
 
-    return board, carList, player_list
+    return board, carList
 
 
 # board = init_game()

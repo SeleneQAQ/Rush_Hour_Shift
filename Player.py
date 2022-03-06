@@ -16,7 +16,7 @@ class Player(object):
         self.y2 = y2
 
         if number == 1:
-            self.turn = True;  #whos turn is it now
+            self.turn = True  #whos turn is it now
         else: 
             self.turn = False
 

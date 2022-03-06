@@ -19,18 +19,24 @@ tile_width = 50
 tile_height = 50
 
 class Car:
-    def __init__(self, number, x1, y1, x2, y2):
+    def __init__(self, number, x1, y1, x2, y2, finishline=None):
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
         self.number = number
 
+        if number == 1:
+            self.turn = True  #whos turn is it now
+        else: 
+            self.turn = False
+
         self.x = tile_width*self.x1 + startPos_x
         self.y = tile_height*self.y1 + startPos_y
         self.length = abs(x2-x1) + abs(y1-y2) + 1
         self.positionVertical = self.what_position()
         self.image = self.find_image()
+        self.finishline = finishline
         
 
     def printAttributes(self):
@@ -38,8 +44,10 @@ class Car:
         print('Car number: ' + str(self.number))
         print('start position: (' + str(self.x1) + ", " + str(self.y1) + ") ")
         print('end position: (' + str(self.x2) + ", " + str(self.y2) + ") " )
-        print('Length of vehicle:', self.length, 'and is', self.position)
+        print('Length of vehicle:', self.length, 'and is', self.positionVertical)
+        print('Finishline is tile with string', self.finishline)
         print('------------------------------------------')
+
 
     def what_position(self):
         if self.x1 == self.x2:
@@ -64,6 +72,21 @@ class Car:
 
     def find_image(self):
         image = None
+        if self.number == 1 or self.number == -1:
+            if self.number == 1:            
+                image = pygame.image.load('images/red-car.png')
+            else:
+                image = pygame.image.load('images/yellow-car.png')
+
+            image = pygame.transform.scale(image, (tile_width*self.length,tile_height))
+
+            if self.number == -1:
+                image = pygame.transform.rotate(image, 180)
+        
+            return image
+
+
+
         if self.length >= 3:
             if random.random() > 0.5:
                 image = pygame.image.load('images/truck.png')
@@ -88,26 +111,16 @@ class Car:
         
         return image
 
-        
-
-    def move_options(self):
-        if self.positionVertical == False:
-            point1 = (self.x1-1, self.y1)
-            point2 = (self.x2+1, self.y2)
-        else:
-            point1 = (self.x1, self.y1-1)
-            point2 = (self.x2, self.y2+1)
-
-        points = []
-        points.append(point1)
-        points.append(point2)
-        return points
-
        
-    def moveCar(self, move):
-        pass
-        # if ()
+    def update(self, new_car):
+        self.x1 = new_car.x1
+        self.y1 = new_car.y1
+        self.x2 = new_car.x2
+        self.y2 = new_car.y2
 
+        self.x = tile_width*new_car.x1 + startPos_x
+        self.y = tile_height*new_car.y1 + startPos_y
+        
 
 
     def render(self, screen):

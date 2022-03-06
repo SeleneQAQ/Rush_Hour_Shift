@@ -3,6 +3,8 @@ import Car
 import time
 import pygame
 import GameAi
+import Agent
+import init_game
 
 board_tiles = []
 car_list = []
@@ -23,6 +25,9 @@ tile_finish_right = pygame.transform.scale(tile_finish_right, (50, 50))
 
 tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
+
+agent1 = Agent.Agent(1, 4)
+agent2 = Agent.Agent(-1, 4)
 
 def set_carlist(generated_cars):
     for car in generated_cars:
@@ -53,19 +58,34 @@ def generate_board(board):
 def update(game_board):
     # print(game_board)
 
-    curr_player = GameAi.check_player_turn(player_list)
+    curr_player = GameAi.check_player_turn(car_list)
     print(f'It is {curr_player.number} turn')
 
 
-    GameAi.tree(curr_player, car_list, game_board)
+    available_moves = GameAi.tree(curr_player.number, car_list, game_board)
+
+    if curr_player.number == 1:
+        action = agent1.chooseAction(available_moves)
+    else:
+        action = agent2.chooseAction(available_moves)
+
+    # print(action)
+    next_board = action['next_board']
+
+    for car in car_list:
+        if car.number == action['carNo']:
+            new_car = init_game.find_car_from_board(action['next_board'], action['carNo'])
+            car.update(new_car)
+
+    
 
     # change whose turn it is
-    for player in player_list:
-        player.turn = not player.turn
-        
-        
+    for player in car_list:
+        if player.number == 1 or player.number == -1:
+            player.turn = not player.turn
+         
 
-    return game_board
+    return next_board
 
 
 def render(screen):
