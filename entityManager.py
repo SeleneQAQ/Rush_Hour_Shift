@@ -26,7 +26,7 @@ tile_finish_right = pygame.transform.scale(tile_finish_right, (50, 50))
 tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
-agent1 = Agent.Agent(1, 4)
+agent1 = Agent.Agent(1, 1)
 agent2 = Agent.Agent(-1, 4)
 
 def set_carlist(generated_cars):
@@ -84,10 +84,11 @@ def update(game_board):
     # print(action)
     next_board = action['next_board']
 
-    for car in car_list:
-        if car.number == action['carNo']:
-            new_car = init_game.find_car_from_board(action['next_board'], action['carNo'])
-            car.update(new_car)
+    # for car in car_list:
+    #     if car.number == action['carNo']:
+    new_car = init_game.find_car_from_board(action['next_board'], action['carNo'])
+    # print(new_car)
+    action['car'].update(new_car)
 
     
 

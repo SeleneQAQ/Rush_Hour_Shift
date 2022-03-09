@@ -33,7 +33,9 @@ entityManager.generate_board(board)
 entityManager.set_carlist(carList)
 # entityManager.set_players(player_list)
 
+screen.fill(white)
 entityManager.render(screen)
+pygame.display.update()
 winner = 0
 
 print(board)
@@ -76,9 +78,10 @@ while(run):
 
     pygame.display.update()
     screen.fill(white)
-    # if count == 2:
+    # if count == 1:
     #     run = False
 
 
-
 pygame.init()
+
+

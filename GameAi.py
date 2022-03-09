@@ -1,5 +1,6 @@
 import Car
 import Player
+import numpy as np
 
 
 def check_player_turn(players): #check whos turn is it, players - players list
@@ -95,7 +96,7 @@ def get_possible_moves(player, cars, game_board):
             check, next_board = check_if_obstacles(point[0], point[1], game_board, car)
             if check == False:
                 # print(f"Car {car.number}. Move {point}, available")
-                validPoints.append( {'carNo': car.number, 'points': point, 'next_board': next_board})
+                validPoints.append( {'carNo': car.number, 'points': point, 'next_board': next_board, 'car': car})
             else:
                 # print(f"Car {car.number}. Move {point}, NOT available")
                 pass
@@ -120,11 +121,17 @@ def tree(player, cars, game_board):
         "cars" : cars
         }
     # print(len(playerMoves))
+    # print(playerMoves)
 
     number = player
     treeOneLvl = []
     if playerMoves != None:
         for move in playerMoves:
+            # print(type(move['next_board']))
+            # str1 = ''.join(move['next_board'])
+            # str1 = np.array_str(move['next_board'])
+            # print(str1)
+            # print(type(str1))
             # print('checking,', move['carNo'])
 
             if move['carNo'] == 1 or move['carNo'] == -1:
@@ -133,6 +140,7 @@ def tree(player, cars, game_board):
                                 "MoveLocation" : move['points'],
                                 "NextState": move['next_board'],
                                 "IsWinningMove" : False,
+                                "car": move['car'],
                     }
 
             else:
@@ -140,6 +148,7 @@ def tree(player, cars, game_board):
                             "Name" : move['carNo'],
                             "MoveLocation" : move['points'],
                             "NextState": move['next_board'],
+                            "car": move['car'],
                             }
             
             treeOneLvl.append(moveDecision)
