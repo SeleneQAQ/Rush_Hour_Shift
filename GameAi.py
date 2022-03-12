@@ -100,8 +100,6 @@ def get_possible_moves(player, cars, game_board):
             else:
                 # print(f"Car {car.number}. Move {point}, NOT available")
                 pass
-
-    # print(validPoints)
     return validPoints   
 
 def state_after_move(point, objectNumber, isPlayer, players, cars):
