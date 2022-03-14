@@ -81,7 +81,6 @@ def check_if_obstacles(x, y, game_board, car):
 
 
 def get_possible_moves(player, cars, game_board):
-    print('get_possible_moves')
     validPoints = []
 
     # objects = [player,*cars]

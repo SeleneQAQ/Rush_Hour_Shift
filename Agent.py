@@ -40,14 +40,6 @@ class Agent(object):
         shortest_move = self.calculateDistance(available_moves)
         distance = shortest_move[0]['distance']
         move_list = []
-        print('here')
-        print(shortest_move[0]['available_moves']['next_board'])
-        print('start')
-        for j in range(len(GameAi.get_possible_moves(-1, shortest_move[0]['available_moves']['cars'],
-                                                     shortest_move[0]['available_moves']['next_board']))):
-            print(j)
-            print(GameAi.get_possible_moves(-1, shortest_move[0]['available_moves']['cars'],
-                                            shortest_move[0]['available_moves']['next_board'])[j]['next_board'])
         for i in range(len(shortest_move)):
             next_move = GameAi.get_possible_moves(-1, shortest_move[i]['available_moves']['cars'],
                                                   shortest_move[i]['available_moves']['next_board'])
@@ -58,6 +50,7 @@ class Agent(object):
                 move_list.append(shortest_move[i])
             if distance == next_shortest_move[0]['distance']:
                 move_list.append(shortest_move[i])
+
         return choice(move_list)['available_moves']
 
     def calculateDistance(self, available_moves):
