@@ -1,8 +1,9 @@
 from copy import copy
+from random import choice
+
 from matplotlib.pyplot import step
 import numpy as np
 from sqlalchemy import true
-
 
 ###############################
 # For the graph thing:
@@ -10,12 +11,13 @@ from sqlalchemy import true
 # Then we have to define a hueristic function which is the one the decides what move to choose
 # and mentioned something about minmax algorithm
 ###############################
+import GameAi
+
+
 class Agent(object):
     def __init__(self, number, type):
         self.number = number
-        self.type = type # 1 = human, 2 = BSF, 3 = A*, 4 = Random
-        
-
+        self.type = type  # 1 = human, 2 = BSF, 3 = A*, 4 = Random
 
     def chooseAction(self, available_moves):
 
@@ -26,15 +28,49 @@ class Agent(object):
             action = self.chooseActionAStar(available_moves)
 
         if self.type == 4:
-            action = self.chooseActionRandom(available_moves)
+            action = self.chooseShortestMoves(available_moves)
 
         return action
-
-
 
     def chooseActionRandom(self, available_moves):
         new_move = available_moves[np.random.randint(len(available_moves))]
         return new_move
+
+    def chooseShortestMoves(self, available_moves):
+        shortest_move = self.calculateDistance(available_moves)
+        distance = shortest_move[0]['distance']
+        move_list = []
+        print('here')
+        print(shortest_move[0]['available_moves']['next_board'])
+        print('start')
+        for j in range(len(GameAi.get_possible_moves(-1, shortest_move[0]['available_moves']['cars'],
+                                                     shortest_move[0]['available_moves']['next_board']))):
+            print(j)
+            print(GameAi.get_possible_moves(-1, shortest_move[0]['available_moves']['cars'],
+                                            shortest_move[0]['available_moves']['next_board'])[j]['next_board'])
+        for i in range(len(shortest_move)):
+            next_move = GameAi.get_possible_moves(-1, shortest_move[i]['available_moves']['cars'],
+                                                  shortest_move[i]['available_moves']['next_board'])
+            next_shortest_move = self.calculateDistance(next_move)
+            if distance > next_shortest_move[0]['distance']:
+                move_list = []
+                distance = next_shortest_move[0]['distance']
+                move_list.append(shortest_move[i])
+            if distance == next_shortest_move[0]['distance']:
+                move_list.append(shortest_move[i])
+        return choice(move_list)['available_moves']
+
+    def calculateDistance(self, available_moves):
+        # calculate the distance in each possible world and return with the shortest distance
+        subtree = []
+        for i in available_moves:
+            for j in i['next_board']:
+                for k in range(len(j)):
+                    if j[k] == '-1':
+                        subtree.append({'distance': k, 'available_moves': i})
+                        break
+        move = sorted(subtree, key=lambda subtree: subtree.__getitem__('distance'))
+        return move
 
     def chooseActionHuman(self, available_moves, steps_left=1):
         next_moves = []
@@ -63,10 +99,9 @@ class Agent(object):
             except:
                 print('This car has no availables moves or is not on the board. Please pick again.')
 
-
-            # The only available directions are ['N','W','E','S']  
+            # The only available directions are ['N','W','E','S']
             dir = line[1].upper()
-            if dir in ['N','W','E','S']:
+            if dir in ['N', 'W', 'E', 'S']:
                 # print('passed direction')
                 pass_check += 1
             else:
@@ -81,7 +116,7 @@ class Agent(object):
                     print('Step size can\'t be <= 0. Try again.')
                 elif step_size > steps_left:
                     print(f'Having step size > steps left is not allowed. Try again.')
-                    
+
             except:
                 print('Not readable value for step size. Try again.')
 
@@ -98,17 +133,14 @@ class Agent(object):
                         next_moves.append(move)
                         legal_move_found += 1
 
-                    
             if legal_move_found != 1:
                 print('Illegal move. Try again')
             else:
                 input_is_valid = True
 
-
-        print('out of while loop',car, dir, step_size)
+        print('out of while loop', car, dir, step_size)
 
         return next_moves[0]
-
 
     def checkIfDirectionIsAllowed(self, dir, step, move):
         car = move['car']
@@ -123,19 +155,18 @@ class Agent(object):
                 if step == 0:
                     if (points[1] < y_up):
                         return True
-                else: 
+                else:
                     if (points[1] == y_up - step):
                         return True
-
 
             if dir == 'S':
                 if car.y1 < car.y2:
                     y_down = car.y2
                 else:
-                    y_down = car.y1  
-                
+                    y_down = car.y1
+
                 if step == 0:
-                    if (points[1] > y_down ):
+                    if (points[1] > y_down):
                         return True
                 else:
                     if (points[1] == y_down + step):
@@ -166,11 +197,10 @@ class Agent(object):
                 if step == 0:
                     if (points[0] > x_right):
                         return True
-                else: 
+                else:
                     if (points[0] == x_right + step):
                         return True
 
-                
             return False
 
         return False
@@ -182,16 +212,14 @@ class Agent(object):
         for m in available_moves:
             # print(m)
             grade = self.heuristic_function(m)
-            if grade < min_grade :
+            if grade < min_grade:
                 min_grade = grade
                 move = m
 
         return move
 
-
-
     def heuristic_function(self, move):
-        board  = move['next_board']
+        board = move['next_board']
         # print(move)
 
         # for car in move['cars']:
@@ -205,7 +233,6 @@ class Agent(object):
             row = 3
             end = 0
             cars_in_way = True
-
 
         min_dist_from_goal = 100
 
@@ -222,30 +249,21 @@ class Agent(object):
                 player_car_found = not player_car_found
                 cars_in_way = not cars_in_way
 
-
-            if board_value == self.number and abs(end-i) < min_dist_from_goal:
-                min_dist_from_goal = abs(end-i)
-
+            if board_value == self.number and abs(end - i) < min_dist_from_goal:
+                min_dist_from_goal = abs(end - i)
 
             if cars_in_way:
                 if board_value != self.number and board_value != 0:
                     move_grade += 1
 
-            
-        
-
-
-        # The min_dist_from_goal needs to be lowered by one 
+        # The min_dist_from_goal needs to be lowered by one
         min_dist_from_goal -= 1
         move_grade += min_dist_from_goal
 
         if move['carNo'] != self.number:
             move_grade += 1
 
-        
         print('car number:', move['carNo'], 'Grade:', move_grade)
 
         return move_grade
         pass
-
-
