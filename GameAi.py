@@ -64,7 +64,7 @@ def find_next_board(game_board, car, new_x, new_y):
 def check_if_obstacles(x, y, game_board, car):
     if x < 0 or y < 0:
         return True, None
-
+        
     if (car.number == 1 and x == len(game_board[0]) - 1) or (car.number == -1 and x == 0):
         next_board = find_next_board(game_board, car, x, y)
         return False, next_board
@@ -90,7 +90,7 @@ def get_possible_moves(player, cars, game_board):
     for car in cars:
         if car.number == -player:
             continue
-        points = car.move_options()
+        points = car.move_options(game_board)
         for point in points:
             check, next_board = check_if_obstacles(point[0], point[1], game_board, car)
             if check == False:

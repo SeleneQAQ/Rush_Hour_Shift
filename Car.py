@@ -5,6 +5,7 @@ import time
 import random
 
 import numpy as np
+import init_game
 
 
 pygame.font.init()
@@ -53,13 +54,18 @@ class Car:
             return False
 
 
-    def move_options(self):
+    def move_options(self, game_board):
+
+        # we need to do this instead of using the self.x1 etc because
+        #  that won't work when going deep into the tree
+        car_pos = init_game.find_car_from_board(game_board, self.number)
+
         if (self.positionVertical == True):
-            point1 = (self.x1, self.y1-1)
-            point2 = (self.x2, self.y2+1)
+            point1 = (car_pos.x1, car_pos.y1-1)
+            point2 = (car_pos.x2, car_pos.y2+1)
         else: 
-            point1 = (self.x1-1, self.y1)
-            point2 = (self.x2+1, self.y2)
+            point1 = (car_pos.x1-1, car_pos.y1)
+            point2 = (car_pos.x2+1, car_pos.y2)
 
         points = []
         points.append(point1)
