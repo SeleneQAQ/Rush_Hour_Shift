@@ -18,8 +18,12 @@ class Agent(object):
 
 
     def chooseAction(self, available_moves):
+
         if self.type == 1:
             action = self.chooseActionHuman(available_moves)
+
+        if self.type == 3:
+            action = self.chooseActionAStar(available_moves)
 
         if self.type == 4:
             action = self.chooseActionRandom(available_moves)
@@ -169,10 +173,79 @@ class Agent(object):
                 
             return False
 
-
         return False
 
+    def chooseActionAStar(self, available_moves):
+        min_grade = 1000
+        move = None
 
-    def checkIfStepIsAllowed(self, dir, step, move):
+        for m in available_moves:
+            # print(m)
+            grade = self.heuristic_function(m)
+            if grade < min_grade :
+                min_grade = grade
+                move = m
+
+        return move
+
+
+
+    def heuristic_function(self, move):
+        board  = move['next_board']
+        # print(move)
+
+        # for car in move['cars']:
+        #     print(car)
+
+        if self.number == 1:
+            row = 2
+            end = board.shape[1]
+            cars_in_way = False
+        else:
+            row = 3
+            end = 0
+            cars_in_way = True
+
+
+        min_dist_from_goal = 100
+
+        move_grade = 0
+        player_car_found = False
+        for i in range(board.shape[1]):
+            try:
+                board_value = int(board[row][i])
+            except:
+                continue
+            # print(board_value == self.number)
+
+            if board_value == self.number and not player_car_found:
+                player_car_found = not player_car_found
+                cars_in_way = not cars_in_way
+
+
+            if board_value == self.number and abs(end-i) < min_dist_from_goal:
+                min_dist_from_goal = abs(end-i)
+
+
+            if cars_in_way:
+                if board_value != self.number and board_value != 0:
+                    move_grade += 1
+
+            
+        
+
+
+        # The min_dist_from_goal needs to be lowered by one 
+        min_dist_from_goal -= 1
+        move_grade += min_dist_from_goal
+
+        if move['carNo'] != self.number:
+            move_grade += 1
+
+        
+        print('car number:', move['carNo'], 'Grade:', move_grade)
+
+        return move_grade
         pass
+
 
