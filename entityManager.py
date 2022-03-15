@@ -1,3 +1,5 @@
+import random
+
 import BoardTile
 import Car
 import time
@@ -27,7 +29,7 @@ tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
 agent1 = Agent.Agent(1, 1)
-agent2 = Agent.Agent(-1, 4)
+agent2 = Agent.Agent(-1, 2)
 
 def set_carlist(generated_cars):
     for car in generated_cars:
@@ -73,9 +75,9 @@ def update(game_board):
     curr_player = GameAi.check_player_turn(car_list)
     print(f'It is {curr_player.number} turn')
 
-
+    #steps = random.randint((1, 5))
+    #for i in steps:
     available_moves = GameAi.tree(curr_player.number, car_list, game_board)
-
     if curr_player.number == 1:
         action = agent1.chooseAction(available_moves)
     else:

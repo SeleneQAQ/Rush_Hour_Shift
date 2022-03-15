@@ -24,7 +24,7 @@ class Agent(object):
         if self.type == 1:
             action = self.chooseActionHuman(available_moves)
 
-        if self.type ==2:
+        if self.type == 2:
             action = self.chooseShortestMoves(available_moves)
 
         if self.type == 3:
@@ -53,8 +53,11 @@ class Agent(object):
                 move_list.append(shortest_move[i])
             if distance == next_shortest_move[0]['distance']:
                 move_list.append(shortest_move[i])
-
-        return choice(move_list)['available_moves']
+        random_move = choice(move_list)
+        if shortest_move[0]['distance'] < random_move['distance']:
+            return shortest_move[0]['available_moves']
+        else:
+            return random_move['available_moves']
 
     def calculateDistance(self, available_moves):
         # calculate the distance in each possible world and return with the shortest distance
