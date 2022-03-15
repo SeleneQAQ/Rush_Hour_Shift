@@ -24,11 +24,14 @@ class Agent(object):
         if self.type == 1:
             action = self.chooseActionHuman(available_moves)
 
+        if self.type ==2:
+            action = self.chooseShortestMoves(available_moves)
+
         if self.type == 3:
             action = self.chooseActionAStar(available_moves)
 
         if self.type == 4:
-            action = self.chooseShortestMoves(available_moves)
+            action = self.chooseActionRandom(available_moves)
 
         return action
 
