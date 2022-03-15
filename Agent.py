@@ -43,19 +43,19 @@ class Agent(object):
         shortest_move = self.calculateDistance(available_moves)
         distance = shortest_move[0]['distance']
         move_list = []
-        for i in range(len(shortest_move)):
-            next_move = GameAi.get_possible_moves(-1, shortest_move[i]['available_moves']['cars'],
-                                                  shortest_move[i]['available_moves']['next_board'])
-            for j in range(len(next_move)):
-                next_next_move = GameAi.get_possible_moves(-1, next_move[j]['cars'],
-                                                           next_move[j]['next_board'])
-                next_next_shortest_move = self.calculateDistance(next_next_move)
+        for step_2 in range(len(shortest_move)):
+            next_move = GameAi.get_possible_moves(-1, shortest_move[step_2]['available_moves']['cars'],
+                                                  shortest_move[step_2]['available_moves']['next_board'])
+            for step_3 in range(len(next_move)):
+                next_2_move = GameAi.get_possible_moves(-1, next_move[step_3]['cars'],
+                                                        next_move[step_3]['next_board'])
+                next_next_shortest_move = self.calculateDistance(next_2_move)
                 if distance > next_next_shortest_move[0]['distance']:
                     move_list = []
                     distance = next_next_shortest_move[0]['distance']
-                    move_list.append(shortest_move[i])
+                    move_list.append(shortest_move[step_2])
                 if distance == next_next_shortest_move[0]['distance']:
-                    move_list.append(shortest_move[i])
+                    move_list.append(shortest_move[step_2])
         random_move = choice(move_list)
         if shortest_move[0]['distance'] < random_move['distance']:
             return shortest_move[0]['available_moves']

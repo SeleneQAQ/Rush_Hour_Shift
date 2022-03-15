@@ -28,7 +28,7 @@ tile_finish_right = pygame.transform.scale(tile_finish_right, (50, 50))
 tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
-agent1 = Agent.Agent(1, 1)
+agent1 = Agent.Agent(1, 4)
 agent2 = Agent.Agent(-1, 2)
 
 def set_carlist(generated_cars):
