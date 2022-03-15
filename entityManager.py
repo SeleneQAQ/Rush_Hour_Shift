@@ -28,13 +28,13 @@ tile_finish_right = pygame.transform.scale(tile_finish_right, (50, 50))
 tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
-agent1 = Agent.Agent(1, 4)
+agent1 = Agent.Agent(1, 1)
 agent2 = Agent.Agent(-1, 2)
 
 def set_carlist(generated_cars):
     for car in generated_cars:
         car_list.append(car)
-    
+
 
 def set_players(players):
     for p in players:
@@ -59,10 +59,10 @@ def generate_board(board):
 def checkIfGameIsFinished(game_board):
     if game_board[2][15] == '1':
         return True, 1
-    
+
     if game_board[3][0] == '-1':
         return True, -1
-    
+
     return False, 0
 
 
@@ -75,8 +75,6 @@ def update(game_board):
     curr_player = GameAi.check_player_turn(car_list)
     print(f'It is {curr_player.number} turn')
 
-    #steps = random.randint((1, 5))
-    #for i in steps:
     available_moves = GameAi.tree(curr_player.number, car_list, game_board)
     if curr_player.number == 1:
         action = agent1.chooseAction(available_moves)
@@ -92,13 +90,13 @@ def update(game_board):
     # print(new_car)
     action['car'].update(new_car)
 
-    
+
 
     # change whose turn it is
     for player in car_list:
         if player.number == 1 or player.number == -1:
             player.turn = not player.turn
-         
+
 
     return next_board, 0
 
@@ -112,7 +110,7 @@ def render(screen):
 
     for entity in player_list:
         entity.render(screen)
-    
+
 
 
 
