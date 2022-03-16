@@ -1,7 +1,7 @@
 import Car
 import Player
 import numpy as np
-
+import uuid
 
 def check_player_turn(players):  # check whos turn is it, players - players list
     for player in players:
@@ -79,6 +79,61 @@ def check_if_obstacles(x, y, game_board, car):
     except:
         return True, None
 
+def which_car_is_on_the_way(x,y, game_board):
+    try:
+        tile_value = int(game_board[y][x])
+        return tile_value
+    except:
+        return None
+
+def check_if_car_can_be_moved_from_point(cars, car_number, x, y):
+    #x, y - cooridinates of point from which the car has to be moved
+    for car in cars:
+        if car.number == car_number:
+            savedCar = car;
+            break;
+    x1car = savedCar.x1; x2car = savedCar.x2; y1car = savedCar.y1 ; y2car = savedCar.y2;
+
+
+
+def tree_heuristic(cars, game_board, parents_ID):
+    validPoints = []
+    # at the beginnnign parents_ID = []; parents_ID.append(';')
+    for car in cars:
+        if car.number == 1 or car.number == -1:
+            if car.turn == False:
+                continue
+            else:
+                #special treatment if player can go forward, it always goes
+                # hard coded going forward, it only works for player -1 on the right
+                check, next_board = check_if_obstacles(car.x1-1, car.y1, game_board, car)
+                if check == False:
+                    score = 1;
+                    id = (str(uuid.uuid4())[:8])
+                    validPoints.append({'next_board': next_board, 'priority_score': score, 'Parents_ID': parents_ID, 'own_id': id} )
+                    continue #maybe even put return validPoints here ? To speed up
+                else:
+                    obstacle_no = which_car_is_on_the_way(car.x1-1, car.y1, game_board);
+                    check_if_car_can_be_moved_from_point(cars, obstacle_no, car.x1-1, car.y1)
+                    #Players were taken care of, Now consider the  cars that are on the way on the way car:
+
+                    pass
+        # Now focus on the other cars, not significant so score = 100
+        points = car.move_options(game_board)
+        for point in points:
+            #(point[0], point[1]) - (x,y) coordinate to check the obsatcles on the board
+
+            check, next_board = check_if_obstacles(point[0], point[1], game_board, car)
+            if check == False:
+                # print(f"Car {car.number}. Move {point}, available")
+                validPoints.append(
+                    {'carNo': car.number, 'points': point, 'next_board': next_board, 'car': car, 'cars': cars})
+            else:
+                # print(f"Car {car.number}. Move {point}, NOT available")
+                pass
+    return validPoints
+
+    pass
 
 def get_possible_moves(player, cars, game_board):
     validPoints = []
@@ -111,49 +166,11 @@ def state_after_move(point, objectNumber, isPlayer, players, cars):
 
 
 def tree(player, cars, game_board):
-    print('tree')
+    
     # player = check_player_turn(players)
     playerMoves = get_possible_moves(player, cars, game_board)
+    
 
-    init_state = {
-        "players": player,
-        "cars": cars
-    }
-    # print(len(playerMoves))
-    # print(playerMoves)
-
-    number = player
-    treeOneLvl = []
-    if playerMoves != None:
-        for move in playerMoves:
-            # print(type(move['next_board']))
-            # str1 = ''.join(move['next_board'])
-            # str1 = np.array_str(move['next_board'])
-            # print(str1)
-            # print(type(str1))
-            # print('checking,', move['carNo'])
-
-            if move['carNo'] == 1 or move['carNo'] == -1:
-                moveDecision = {"Player": True,
-                                "Name": number,
-                                "MoveLocation": move['points'],
-                                "NextState": move['next_board'],
-                                "IsWinningMove": False,
-                                "car": move['car'],
-                                }
-
-            else:
-                moveDecision = {"Player": False,
-                                "Name": move['carNo'],
-                                "MoveLocation": move['points'],
-                                "NextState": move['next_board'],
-                                "car": move['car'],
-                                }
-
-            treeOneLvl.append(moveDecision)
-
-    # print('TREE level:')
-    # print(treeOneLvl)
     return playerMoves
 
     # What to do have at least first level of the tree like this: https://www.educative.io/edpresso/how-to-implement-a-breadth-first-search-in-python
