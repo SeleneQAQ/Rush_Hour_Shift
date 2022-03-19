@@ -31,6 +31,7 @@ agent1 = Agent.Agent(1, 4)
 agent2 = Agent.Agent(-1, 5)
 
 
+
 def set_carlist(generated_cars):
     for car in generated_cars:
         car_list.append(car)
@@ -74,7 +75,6 @@ def selectAMoveFromAgent(agent, available_moves, cars, game_board):
         action = agent.chooseAction(available_moves)
 
     return action
-
 
 def update(game_board, steps):
     # print(game_board)
