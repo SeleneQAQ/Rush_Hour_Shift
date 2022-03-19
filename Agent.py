@@ -1,6 +1,6 @@
 from copy import copy
 from random import choice
-
+import random
 from matplotlib.pyplot import step
 import numpy as np
 from sqlalchemy import true
@@ -20,7 +20,6 @@ class Agent(object):
         self.type = type  # 1 = human, 2 = BSF, 3 = A*, 4 = Random
 
     def chooseAction(self, available_moves):
-
         if self.type == 1:
             action = self.chooseActionHuman(available_moves)
 
@@ -82,11 +81,6 @@ class Agent(object):
         step_size = None
         while not input_is_valid:
             pass_check = 0
-            if steps_left == 1:
-                print('You have 1 move left')
-            else:
-                print(f"You have {steps_left} moves left.")
-
             raw_line = input(f'Select a car, direction (N,W,S,E) and step size:')
             line = raw_line.split(" ")
             print(line)

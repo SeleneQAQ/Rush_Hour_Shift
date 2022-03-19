@@ -1,3 +1,4 @@
+import random
 
 import pygame
 # import keys
@@ -17,7 +18,7 @@ print(points[0][0])
 width, height = 1080, 600
 screen = pygame.display.set_mode((width, height))
 white = (255,255,255)
-
+steps = random.randint(1, 5)
 run = True
 carList = []
 board, carList = init_game.init_game()
@@ -56,9 +57,8 @@ while(run):
 
     # if not keys[pygame.K_o]:
 
-
     if winner == 0:
-        board, winner = entityManager.update(board)
+        board, winner, steps = entityManager.update(board, steps)
     # print(board)
     pygame.time.wait(100)
 
