@@ -18,7 +18,7 @@ import init_game
 class Agent(object):
     def __init__(self, number, type):
         self.number = number
-        self.type = type  # 1 = human, 2 = BSF, 3 = A*, 4 = Random
+        self.type = type  # 1 = human, 2 = BSF, 3 = Not used 4 = Random, 5 = A*
 
     def chooseAction(self, available_moves):
         if self.type == 1:
@@ -27,8 +27,8 @@ class Agent(object):
         if self.type == 2:
             action = self.chooseShortestMoves(available_moves)
 
-        if self.type == 3:
-            action = self.chooseActionAStar(available_moves)
+        # if self.type == 3:
+        #     action = self.chooseActionAStar(available_moves)
 
         if self.type == 4:
             action = self.chooseActionRandom(available_moves)

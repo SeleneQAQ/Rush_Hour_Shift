@@ -5,6 +5,7 @@ import pygame
 import GameAi
 import Agent
 import init_game
+import random
 
 board_tiles = []
 car_list = []
@@ -65,6 +66,14 @@ def checkIfGameIsFinished(game_board):
 
     return False, 0
 
+def selectAMoveFromAgent(agent, available_moves, cars, game_board):
+    
+    if agent.number == -1 and agent.type == 5:
+        action = GameAi.tree_heuristic(cars, game_board)
+    else:
+        action = agent.chooseAction(available_moves)
+
+    return action
 
 def update(game_board, steps):
     # print(game_board)
@@ -80,25 +89,30 @@ def update(game_board, steps):
     if steps-1 != 0 and curr_player.number == 1:
         print("player 1 left steps:")
         print(steps)
-        action = agent1.chooseAction(available_moves)
+        # action = agent1.chooseAction(available_moves)
+        action = selectAMoveFromAgent(agent1, available_moves, car_list, game_board)
         next_board = action['next_board']
         new_car = init_game.find_car_from_board(action['next_board'], action['carNo'])
         action['car'].update(new_car)
         steps -= 1
         return next_board, 0, steps
+
     if steps-1 != 0 and curr_player.number == -1:
         print("player 2 left steps")
         print(steps)
-        action = agent2.chooseAction(available_moves)
+        # action = agent2.chooseAction(available_moves)
+        action = selectAMoveFromAgent(agent2, available_moves, car_list, game_board)
         next_board = action['next_board']
         new_car = init_game.find_car_from_board(action['next_board'], action['carNo'])
         action['car'].update(new_car)
         steps -= 1
         return next_board, 0, steps
+
     if steps-1 == 0 and curr_player.number == 1:
         print("player 1 left steps")
         print(steps)
-        action = agent1.chooseAction(available_moves)
+        # action = agent1.chooseAction(available_moves)
+        action = selectAMoveFromAgent(agent1, available_moves, car_list, game_board)
         next_board = action['next_board']
         new_car = init_game.find_car_from_board(action['next_board'], action['carNo'])
         action['car'].update(new_car)
@@ -108,10 +122,12 @@ def update(game_board, steps):
                 player.turn = not player.turn
         steps = random.randint(1, 5)
         return next_board, 0, steps
+        
     if steps-1 == 0 and curr_player.number == -1:
         print("player 2 left steps")
         print(steps)
-        action = agent2.chooseAction(available_moves)
+        # action = agent2.chooseAction(available_moves)
+        action = selectAMoveFromAgent(agent2, available_moves, car_list, game_board)
         next_board = action['next_board']
         new_car = init_game.find_car_from_board(action['next_board'], action['carNo'])
         action['car'].update(new_car)
