@@ -26,6 +26,9 @@ print(board.shape)
 print(board)
 print()
 print(carList)
+print('#################################')
+print('#################################')
+print('#################################')
 # for c in carList:
 #     c.printAttributes()
 
@@ -60,7 +63,6 @@ while(run):
     if winner == 0:
         board, winner = entityManager.update(board)
     # print(board)
-    pygame.time.wait(100)
 
 
     if keys[pygame.K_q]:
@@ -78,8 +80,10 @@ while(run):
 
     pygame.display.update()
     screen.fill(white)
-    # if count == 1:
+    # if count == 4:
     #     run = False
+    if winner == 0:
+        pygame.time.wait(1200)
 
 
 pygame.init()

@@ -1,5 +1,3 @@
-import random
-
 import BoardTile
 import Car
 import time
@@ -29,7 +27,7 @@ tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
 agent1 = Agent.Agent(1, 4)
-agent2 = Agent.Agent(-1, 2)
+agent2 = Agent.Agent(-1, 5)
 
 def set_carlist(generated_cars):
     for car in generated_cars:
@@ -73,33 +71,58 @@ def update(game_board):
         return game_board, winner
 
     curr_player = GameAi.check_player_turn(car_list)
+    print()
     print(f'It is {curr_player.number} turn')
 
     #steps = random.randint((1, 5))
     #for i in steps:
     available_moves = GameAi.tree(curr_player.number, car_list, game_board)
-    if curr_player.number == 1:
-        action = agent1.chooseAction(available_moves)
-    else:
-        action = agent2.chooseAction(available_moves)
 
-    # print(action)
+    if curr_player.number == 1:
+        # action = agent1.chooseAction(available_moves)
+        action = available_moves[-1]
+    else:
+        if agent2.type == 5:
+            print('------------------------------')
+            action = GameAi.tree_heuristic(car_list, game_board)
+
+            if action['carNo'] is None:
+                action = agent2.chooseActionRandom(available_moves)
+                # print('I AM PLAYING A RANDOM MOVE RIGHT NOW')
+            print()
+            print()
+            print('Inside Entity Manager:')
+
+            print(action['carNo'])
+            print(action['next_board'])
+            # test = input('solution found:')
+
+        else:
+            action = agent2.chooseAction(available_moves)
+
+    # print('ACTION IS!!!')
+    # print(action['carNo'])
+    # print('(x1,y1) = ', action['car'].x1, action['car'].y1, '(x2,y2) =', action['car'].x2, action['car'].y2)
+    # print(action['next_board'])
     next_board = action['next_board']
 
-    # for car in car_list:
-    #     if car.number == action['carNo']:
+
     new_car = init_game.find_car_from_board(action['next_board'], action['carNo'])
     # print(new_car)
-    action['car'].update(new_car)
+    # print(action['car'], 'action_car')
 
-    
+    for car in car_list:
+        if car.number == action['carNo']:
+            # print(car, 'car_list_car')
+            car.update(new_car)
+    # action['car'].update(new_car)
+
 
     # change whose turn it is
     for player in car_list:
         if player.number == 1 or player.number == -1:
             player.turn = not player.turn
          
-
     return next_board, 0
 
 

@@ -12,6 +12,7 @@ from sqlalchemy import true
 # and mentioned something about minmax algorithm
 ###############################
 import GameAi
+import init_game
 
 
 class Agent(object):
@@ -268,4 +269,3 @@ class Agent(object):
         print('car number:', move['carNo'], 'Grade:', move_grade)
 
         return move_grade
-        pass
