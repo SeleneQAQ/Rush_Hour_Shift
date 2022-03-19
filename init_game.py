@@ -151,7 +151,7 @@ def init_game():
 
     carList = []
     #Assume we have maximum 10 cars
-    carList = generate_Car_List(10)
+    carList = generate_Car_List(50)
 
     # Generate the players
     # player_list = generate_players()
