@@ -31,6 +31,8 @@ tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 agent1 = Agent.Agent(1, 5)
 agent2 = Agent.Agent(-1, 2)
 
+list_of_agents = [agent1, agent2]
+
 
 def set_carlist(generated_cars):
     for car in generated_cars:

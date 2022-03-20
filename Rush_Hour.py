@@ -35,7 +35,6 @@ print('#################################')
 
 entityManager.generate_board(board)
 entityManager.set_carlist(carList)
-# entityManager.set_players(player_list)
 
 screen.fill(white)
 entityManager.render(screen)
