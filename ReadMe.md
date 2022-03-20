@@ -7,14 +7,19 @@ It is best to have the command prompt window and the pygame window side by side 
 
 
 If a user wants to see different agents play, lines 31 and 32 in entityManager.py needs to be changed. The first number of the players' cars. They should always be 1 and -1. The second number in those lines represents what kind of a agent is created. Numbers represent a different agent:
+
 1 = Human Player
+
 2 = Best Search First (This can only be used on player = -1)
+
 4 = Random agent
+
 5 = Improved Breadth First Search
 
 
 ###### Human player
 To move the cars when playing Rush Hour Shift the player types into the command prompt window which car he wants to move, the direction of the car (N,E,W,S) and how far that car should move, respectively and seperated by spaces. 
+
 Example, if the input from the command line is: '4 e 1' car number 4 will move 1 step to the east (right).
 
 
