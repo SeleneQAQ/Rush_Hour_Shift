@@ -10,7 +10,7 @@ If a user wants to see different agents play, lines 31 and 32 in entityManager.p
 
 1 = Human Player
 
-2 = Best Search First (This can only be used on player = -1)
+2 = Best First Search (This can only be used on player = -1)
 
 4 = Random agent
 
