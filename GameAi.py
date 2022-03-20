@@ -1,5 +1,4 @@
 import Car
-import Player
 import numpy as np
 import uuid
 

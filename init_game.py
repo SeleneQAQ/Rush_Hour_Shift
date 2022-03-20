@@ -1,7 +1,6 @@
 import xlrd
 import numpy as np
 import Car
-import Player
 import time
 
 table = xlrd.open_workbook('game.xls')

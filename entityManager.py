@@ -28,20 +28,16 @@ tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
 # Creating the agents. The agents's number need to be 1 and -1 and match the game boards' number
-agent1 = Agent.Agent(1, 5)
-agent2 = Agent.Agent(-1, 2)
+agent1 = Agent.Agent(1, 1)
+agent2 = Agent.Agent(-1, 5)
 
-list_of_agents = [agent1, agent2]
+agents_list = [agent1, agent2]
 
 
 def set_carlist(generated_cars):
     for car in generated_cars:
         car_list.append(car)
 
-
-def set_players(players):
-    for p in players:
-        player_list.append(p)
 
 
 def generate_board(board):
@@ -158,5 +154,7 @@ def render(screen):
     for entity in car_list:
         entity.render(screen)
 
-    for entity in player_list:
+    for entity in agents_list:
         entity.render(screen)
+
+    

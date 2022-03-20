@@ -133,37 +133,4 @@ class Car:
         textsurface = myfont.render(f'{self.number}', False, (255, 255, 255))
         screen.blit(textsurface, (self.x+5,self.y+5))
 
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-    def rotate_and_center(self, ds, x, y, image, radians):
-        degrees = 180/math.pi * radians
-        rotated = pygame.transform.rotate(image, -degrees)
-
-        rect = rotated.get_rect()
-        ds.blit(rotated, (x - rect.center[0], y - rect.center[1]))
-
-
-    def rotate_and_centerRect(self, ds, x, y, w, h, radians):
-        points = self.pointsToCheck(x, y, w, h, radians)
-        pygame.draw.lines(ds, (255,0,255), True, points, 1)
-
-    def drawDistanceToCollision(self, ds, x, y, points, radians):
-        for i in range(len(points)):
-            pygame.draw.line(ds, (0,255,100), points[i], (x, y), 1)
-
-
-    
         

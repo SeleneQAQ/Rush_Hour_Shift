@@ -4,6 +4,7 @@ import random
 from matplotlib.pyplot import step
 import numpy as np
 from sqlalchemy import true
+import pygame
 
 ###############################
 # For the graph thing:
@@ -263,3 +264,24 @@ class Agent(object):
         print('car number:', move['carNo'], 'Grade:', move_grade)
 
         return move_grade
+
+
+    def render(self, screen):
+
+        if self.type == 1:
+            text = f'Player {self.number} is a Human Player'
+        elif self.type == 2:
+            text = f'Player {self.number} is the \'Best First Search algorithm\''
+        elif self.type == 4:
+            text = f'Player {self.number} is a random move player'
+        elif self.type == 5:
+            text = f'Player {self.number} is the \'Improved Breadth First Search algorithm\''
+
+
+        myfont = pygame.font.SysFont('Arial', 20)
+        textsurface = myfont.render(text, False, (0, 0, 0))
+        if self.number == 1:
+            screen.blit(textsurface, (140, 80))
+        else:
+            screen.blit(textsurface, (140, 110))
+
