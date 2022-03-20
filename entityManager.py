@@ -79,7 +79,7 @@ def update(game_board, steps):
     # print(game_board)
     game_finished, winner = checkIfGameIsFinished(game_board)
     if game_finished:
-        return game_board, winner
+        return game_board, winner, steps
 
     curr_player = GameAi.check_player_turn(car_list)
     print()
