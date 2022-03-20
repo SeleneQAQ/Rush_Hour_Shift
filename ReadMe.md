@@ -8,11 +8,9 @@ It is best to have the command prompt window and the pygame window side by side 
 
 If a user wants to see different agents play, lines 31 and 32 in entityManager.py needs to be changed. The first number of the players' cars. They should always be 1 and -1. The second number in those lines represents what kind of a agent is created. Numbers represent a different agent:
 1 = Human Player
-2 = Best Search First
+2 = Best Search First (This can only be used on player = -1)
 4 = Random agent
-5 = A (This can only be used on player = -1)
-
-
+5 = Improved Breadth First Search
 
 
 ###### Human player

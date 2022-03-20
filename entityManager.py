@@ -28,8 +28,8 @@ tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
 # Creating the agents. The agents's number need to be 1 and -1 and match the game boards' number
-agent1 = Agent.Agent(1, 2)
-agent2 = Agent.Agent(-1, 5)
+agent1 = Agent.Agent(1, 5)
+agent2 = Agent.Agent(-1, 2)
 
 
 def set_carlist(generated_cars):
@@ -69,7 +69,7 @@ def checkIfGameIsFinished(game_board):
 
 def selectAMoveFromAgent(agent, available_moves, cars, game_board):
     
-    if agent.number == -1 and agent.type == 5:
+    if agent.type == 5:
         action = GameAi.tree_heuristic(cars, game_board)
     else:
         action = agent.chooseAction(available_moves)

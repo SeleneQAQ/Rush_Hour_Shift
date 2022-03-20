@@ -121,24 +121,27 @@ def tree_heuristic(cars, game_board):
     print(game_board)
     print('Inside tree heuristic:')
     # at the beginnnign parents_ID = []; parents_ID.append(';')
+    
     for car in cars:
-        # print(car.number)
         if car.number == 1 or car.number == -1:
             if car.turn == True:
                 break
 
-
-    # print(car, car.number)
-
     #special treatment if player can go forward, it always goes
     # hard coded going forward, it only works for player -1 on the right
     print(f'it\'s time for car number {car.number} to make a move!')
-    check, next_board = check_if_obstacles(car.x1-1, car.y1, game_board, car)
+
+    if car.number == 1:
+        square_to_check = (car.x2+1, car.y2)
+    else:
+        square_to_check = (car.x1-1, car.y1)
+    
+    check, next_board = check_if_obstacles(square_to_check[0], square_to_check[1], game_board, car)
     if check == False:
         #maybe even put return validPoints here ? To speed up
         return {'next_board': next_board, 'car': car, 'carNo': car.number}
     else:
-        obstacle_no = which_car_is_on_the_way(car.x1-1, car.y1, game_board)
+        obstacle_no = which_car_is_on_the_way(square_to_check[0], square_to_check[1], game_board)
 
         car_in_way = init_game.find_car_from_board(game_board, obstacle_no)
         # check_if_car_can_be_moved_from_point(cars, obstacle_no, car.x1-1, car.y1)
@@ -147,12 +150,12 @@ def tree_heuristic(cars, game_board):
 
         # Now focus on the other cars, not significant so score = 100
         ## now we want to get all possible moves for the obstacle car
-        zero_point = (car.x1-1, car.y1)
+        zero_point = (square_to_check[0], square_to_check[1])
 
         points = car_in_way.move_options(game_board)
         move_list = []
         for p in points:
-            move_list.append({'board': game_board, 'point': p, 'car_to_check': car_in_way, 'zero_point': (car.x1-1, car.y1)})
+            move_list.append({'board': game_board, 'point': p, 'car_to_check': car_in_way, 'zero_point': zero_point})
 
 
         solution_not_found = True
