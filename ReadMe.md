@@ -2,7 +2,7 @@
 
 ### How to Play
 
-Open command prompt in the Rush Hour Shift folder and run the python script Rush_Hour.py
+Open command prompt or anaconda prompt in the Rush Hour Shift folder and run the python script 'Rush_Hour.py'
 It is best to have the command prompt window and the pygame window side by side when playing.
 
 
