@@ -6,6 +6,7 @@ import GameAi
 import Agent
 import init_game
 import random
+import numpy as np
 
 board_tiles = []
 car_list = []
@@ -28,8 +29,8 @@ tile_regular = pygame.image.load('images/track_tile.jpg')
 tile_regular = pygame.transform.scale(tile_regular, (50, 50))
 
 # Creating the agents. The agents's number need to be 1 and -1 and match the game boards' number
-agent1 = Agent.Agent(1, 1)
-agent2 = Agent.Agent(-1, 5)
+agent1 = Agent.Agent(1, 5)
+agent2 = Agent.Agent(-1, 4)
 
 agents_list = [agent1, agent2]
 
@@ -72,7 +73,19 @@ def selectAMoveFromAgent(agent, available_moves, cars, game_board):
     else:
         action = agent.chooseAction(available_moves)
 
+    if agent.type != 5 and agent.type != 1:
+        print(f'Player {agent.number} made move. He moved car', action['carNo'],'to', action['points'])
+    elif agent.type == 5:
+        for a_move in available_moves:
+            if np.array_equal(a_move['next_board'], action['next_board']):
+                points = a_move['points']
+                break
+            points = None
+
+        print(f'Player {agent.number} made move. He moved car', action['carNo'], 'to', points)
+
     return action
+
 
 def update(game_board, steps):
     # print(game_board)
@@ -81,13 +94,12 @@ def update(game_board, steps):
         return game_board, winner, steps
 
     curr_player = GameAi.check_player_turn(car_list)
-    print()
-    print(f'It is {curr_player.number} turn')
+    print(f'It\'s player {curr_player.number} turn. He has {steps} moves left:')
 
     available_moves = GameAi.tree(curr_player.number, car_list, game_board)
     if steps-1 != 0 and curr_player.number == 1:
-        print("player 1 left steps:")
-        print(steps)
+        # print("player 1 left steps:")
+        # print(steps)
         # action = agent1.chooseAction(available_moves)
         action = selectAMoveFromAgent(agent1, available_moves, car_list, game_board)
         next_board = action['next_board']
@@ -97,8 +109,8 @@ def update(game_board, steps):
         return next_board, 0, steps
 
     if steps-1 != 0 and curr_player.number == -1:
-        print("player 2 left steps")
-        print(steps)
+        # print("player 2 left steps")
+        # print(steps)
         # action = agent2.chooseAction(available_moves)
         action = selectAMoveFromAgent(agent2, available_moves, car_list, game_board)
         next_board = action['next_board']
@@ -108,8 +120,8 @@ def update(game_board, steps):
         return next_board, 0, steps
 
     if steps-1 == 0 and curr_player.number == 1:
-        print("player 1 left steps")
-        print(steps)
+        # print("player 1 left steps")
+        # print(steps)
         # action = agent1.chooseAction(available_moves)
         action = selectAMoveFromAgent(agent1, available_moves, car_list, game_board)
         next_board = action['next_board']
@@ -119,12 +131,13 @@ def update(game_board, steps):
         for player in car_list:
             if player.number == 1 or player.number == -1:
                 player.turn = not player.turn
+                print()
         steps = random.randint(1, 5)
         return next_board, 0, steps
         
     if steps-1 == 0 and curr_player.number == -1:
-        print("player 2 left steps")
-        print(steps)
+        # print("player 2 left steps")
+        # print(steps)
         # action = agent2.chooseAction(available_moves)
         action = selectAMoveFromAgent(agent2, available_moves, car_list, game_board)
         next_board = action['next_board']
@@ -134,6 +147,7 @@ def update(game_board, steps):
         for player in car_list:
             if player.number == 1 or player.number == -1:
                 player.turn = not player.turn
+                print()
         steps = random.randint(1, 5)
         return next_board, 0, steps
     # print(action)

@@ -127,7 +127,7 @@ class Agent(object):
                         continue
 
                     if self.checkIfDirectionIsAllowed(dir, step_size, move):
-                        print('Step: Legal move', move['points'])
+                        print('Legal move', move['points'])
                         next_moves.append(move)
                         legal_move_found += 1
 
@@ -136,7 +136,7 @@ class Agent(object):
             else:
                 input_is_valid = True
 
-        print('out of while loop', car, dir, step_size)
+        # print('out of while loop', car, dir, step_size)
 
         return next_moves[0]
 
@@ -189,8 +189,6 @@ class Agent(object):
                     x_right = car.x2
                 else:
                     x_right = car.x1
-
-                print(points, x_right, step, x_right + step)
 
                 if step == 0:
                     if (points[0] > x_right):

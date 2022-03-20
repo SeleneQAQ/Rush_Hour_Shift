@@ -10,11 +10,6 @@ import GameAi
 
 
 pygame.init()
-points = []
-points.append((1,2))
-points.append((3,4))
-print(points[0][0])
-
 width, height = 1080, 600
 screen = pygame.display.set_mode((width, height))
 white = (255,255,255)
@@ -23,16 +18,6 @@ run = True
 carList = []
 board, carList = init_game.init_game()
 
-print(board.shape)
-print(board)
-print()
-print(carList)
-print('#################################')
-print('#################################')
-print('#################################')
-# for c in carList:
-#     c.printAttributes()
-
 entityManager.generate_board(board)
 entityManager.set_carlist(carList)
 
@@ -40,12 +25,9 @@ screen.fill(white)
 entityManager.render(screen)
 pygame.display.update()
 winner = 0
+print()
 
-print(board)
-
-count = 0
 while(run):
-    count += 1
     #pygame.time.delay(100)
     #event_handler()
     # print('inside loop')
@@ -58,7 +40,6 @@ while(run):
 
 
     # if not keys[pygame.K_o]:
-
     if winner == 0:
         board, winner, steps = entityManager.update(board, steps)
     # print(board)
@@ -79,8 +60,6 @@ while(run):
 
     pygame.display.update()
     screen.fill(white)
-    # if count == 4:
-    #     run = False
     if winner == 0:
         pygame.time.wait(1200)
 

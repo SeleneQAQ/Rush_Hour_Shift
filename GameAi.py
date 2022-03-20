@@ -114,12 +114,6 @@ def find_what_car_moved(cars, game_board):
 
 
 def tree_heuristic(cars, game_board):
-    validPoints = []
-    print()
-    print()
-    print(game_board)
-    print('Inside tree heuristic:')
-    # at the beginnnign parents_ID = []; parents_ID.append(';')
     
     for car in cars:
         if car.number == 1 or car.number == -1:
@@ -128,7 +122,7 @@ def tree_heuristic(cars, game_board):
 
     #special treatment if player can go forward, it always goes
     # hard coded going forward, it only works for player -1 on the right
-    print(f'it\'s time for car number {car.number} to make a move!')
+    # print(f'it\'s time for car number {car.number} to make a move!')
 
     if car.number == 1:
         square_to_check = (car.x2+1, car.y2)
@@ -144,10 +138,10 @@ def tree_heuristic(cars, game_board):
 
         car_in_way = init_game.find_car_from_board(game_board, obstacle_no)
         # check_if_car_can_be_moved_from_point(cars, obstacle_no, car.x1-1, car.y1)
+
         #Players were taken care of, Now consider the  cars that are on the way on the way car:
 
-
-        # Now focus on the other cars, not significant so score = 100
+        # Now focus on the other cars
         ## now we want to get all possible moves for the obstacle car
         zero_point = (square_to_check[0], square_to_check[1])
 
@@ -210,12 +204,14 @@ def tree_heuristic(cars, game_board):
                     zero_point = point
                     checked_cars.append(car_to_check.number)
                     for p in new_collision_points:
-                        move_list2.append({'board': board,
-                                           'point': p,
-                                           'car_to_check': new_car_in_way,
-                                           'zero_point': zero_point,
-                                           'original_move': original_move,
-                                           'checked_cars': checked_cars})
+                        move_list2.append({'board': board, #game board in the state of the current node
+                                            'point': p, #one of the possible moves that the car in the way can do
+                                            'car_to_check': new_car_in_way, #car that is in the way to obtain the goal
+                                            'zero_point': zero_point, #loacation that needs to be cleared from cars
+                                            'original_move': original_move, #parent's game board
+                                            'checked_cars': checked_cars}) # list of numbers of cars already checked, so you cannot
+                                                                            # move the same car when you aredeeper in the tree.
+                                                                            # prevents from infinite loops
 
                 else:
                     # Able to move obstacle car
@@ -246,25 +242,29 @@ def tree_heuristic(cars, game_board):
                         for point in points:
                             if car_to_check.positionVertical:
                                 if not (y_start <= point[1] and point[1] <= y_end):
-                                    move_list2.append({'board': next_board,
-                                                       'point': point,
-                                                       'car_to_check': car_to_check,
-                                                       'zero_point': zero_point,
-                                                       'original_move': original_move,
-                                                       'checked_cars': checked_cars})
+                                    move_list2.append({'board': next_board, #game board in the state of the current node
+                                                        'point': point, #one of the possible moves that the car in the way can do
+                                                        'car_to_check': car_to_check, #car that is in the way to obtain the goal
+                                                        'zero_point': zero_point, #loacation that needs to be cleared from cars
+                                                        'original_move': original_move, #parent's game board
+                                                        'checked_cars': checked_cars}) # list of numbers of cars already checked, so you cannot
+                                                                                        # move the same car when you aredeeper in the tree.
+                                                                                        # prevents from infinite loops
 
                             if not car_to_check.positionVertical:
                                 if not (x_start <= point[0] and point[1] <= x_end):
-                                    move_list2.append({'board': next_board,
-                                                       'point': point,
-                                                       'car_to_check': car_to_check,
-                                                       'zero_point': zero_point,
-                                                       'original_move': original_move,
-                                                       'checked_cars': checked_cars})
+                                    move_list2.append({'board': next_board, #game board in the state of the current node
+                                                        'point': point, #one of the possible moves that the car in the way can do
+                                                        'car_to_check': car_to_check, #car that is in the way to obtain the goal
+                                                        'zero_point': zero_point, #loacation that needs to be cleared from cars
+                                                        'original_move': original_move, #parent's game board
+                                                        'checked_cars': checked_cars}) # list of numbers of cars already checked, so you cannot
+                                                                                        # move the same car when you aredeeper in the tree.
+                                                                                        # prevents from infinite loops
                         
             move_list = move_list2.copy()
     
-    return {'carNo': None}
+    return {'carNo': None, 'points': None}
 
 
 def get_possible_moves(player, cars, game_board):
